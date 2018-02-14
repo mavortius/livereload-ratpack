@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.ratpack:ratpack-gradle:1.5.1"
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
+        classpath 'org.kordamp.gradle:livereload-gradle-plugin:0.2.1'
+    }
+}
+
+apply plugin: "io.ratpack.ratpack-groovy"
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "org.kordamp.gradle.livereload"
+apply plugin: "idea"
+apply plugin: "eclipse"
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Default SLF4J binding.  Note that this is a blocking implementation.
+    // See here for a non blocking appender http://logging.apache.org/log4j/2.x/manual/async.html
+    runtime 'org.slf4j:slf4j-simple:1.7.25'
+
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+}
+
+// Configure liveReload task.
+liveReload {
+    // Set docRoot as the base directory for
+    // the livereload server to watch for changes.
+    // We choose the output directory of the
+    // processResources task, because it will contain
+    // the changed files if we run our application
+    // with Gradle's continuous support ($ gradle -t run).
+    // In another terminal we need to start this
+    // task ($ gradle liveReload).
+    docRoot processResources.destinationDir.canonicalPath
+}
